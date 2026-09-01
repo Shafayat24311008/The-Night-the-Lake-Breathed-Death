@@ -1,0 +1,244 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lake Nyos, 1986 - The Night the Lake Breathed Death | GIS Story Map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--navy:#102a43;--blue:#1769aa;--red:#c62828;--orange:#e76f00;--green:#2e7d32;--gold:#a87900;--bg:#edf3f6}
+*{box-sizing:border-box}html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#17212b}
+#map{height:100vh;width:100vw}
+.panel{position:absolute;z-index:1000;background:rgba(255,255,255,.97);box-shadow:0 3px 18px rgba(0,0,0,.25);border-radius:10px}
+#story{top:12px;right:12px;width:390px;height:calc(100vh - 24px);overflow:auto;padding:15px}
+#story h2{font-size:17px;margin:0 0 12px;color:var(--navy)}
+.step{border-left:6px solid var(--green);padding:10px 12px;margin:0 0 12px;background:#f7fafb;border-radius:0 8px 8px 0}
+.step h3{font-size:15px;margin:0 0 6px; color: cyan;}.step p{font-size:12px;line-height:1.5;margin:6px 0}
+details{margin:10px 0;border:1px solid #d4dde2;border-radius:7px;background:#fff}
+summary{cursor:pointer;padding:9px;font-weight:bold;font-size:12px;color:#24495e}
+details .inside{padding:10px;font-size:12px;line-height:1.5}
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:8px 0}
+.t{background:#f1f5f7;padding:7px;border-radius:6px;text-align:center;font-size:9px;line-height:1.2}
+.t b{display:block;color:#24495e;margin-bottom:3px}
+#lakeNav{position:absolute;z-index:1200;left:50%;top:14px;transform:translateX(-50%);background:rgba(255,255,255,.97);box-shadow:0 3px 16px rgba(0,0,0,.28);border-radius:10px;padding:7px;display:flex;gap:6px}
+#lakeNav button{border:0;border-radius:7px;padding:9px 13px;font-weight:bold;cursor:pointer;font-size:12px;background:#eef3f6}
+.jump{display:inline-block;margin-top:6px;padding:5px 8px;border-radius:6px;background:#eaf2f6;color:#1769aa;font-weight:bold;text-decoration:none;font-size:10px;cursor:pointer;border:none}
+.ref{font-size:11px;line-height:1.45;margin:7px 0}
+.ref a{color:#1267a5}
+/* Removed .lake-tag CSS rule as custom divIcons are no longer used for lake tags */
+.distance-label {
+    font-size: 14px; /* Increased font size */
+    font-weight: bold;
+    color: var(--navy); /* Changed color for consistency */
+    white-space: nowrap;
+    text-align: center;
+    background-color: transparent; /* Removed white background */
+    text-shadow: 0px 0px 3px white, 0px 0px 3px white, 0px 0px 3px white; /* Added text shadow for readability */
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="lakeNav">
+  <button type="button" onclick="goLake('monoun')">LAKE MONOUN</button>
+  <button type="button" onclick="goLake('both')">COMPARE BOTH</button>
+  <button type="button" onclick="goLake('nyos')">LAKE NYOS</button>
+</div>
+
+<div id="story" class="panel">
+  <h2>📖 The Night the Lake Breathed Death</h2>
+
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>1 &middot; Lake Nyos before the disaster</h3>
+    <button type="button" class="jump" onclick="goLake('nyos')">📍 SHOW LAKE NYOS ON MAP</button>
+    <p>On the evening of 21 August 1986, Lake Nyos looked much like it always had. High in the volcanic highlands of northwestern Cameroon, the deep blue lake rested quietly inside an ancient volcanic crater. Around it, small rural communities prepared for another night. Families returned home. Cattle settled in their enclosures. Fires and lamps flickered inside houses. By around 9:30 p.m., the weather had become calm.</p>
+    <p>Nothing about the lake seemed threatening. Yet beneath the apparently peaceful surface, an invisible catastrophe had been preparing for years.</p>
+  </div>
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>2 &middot; The secret beneath the blue water</h3>
+    <p>Lake Nyos was not simply holding water. Its deep layers had accumulated enormous quantities of carbon dioxide supplied from geological sources beneath the volcanic region. Because the lake was strongly stratified, CO&sup2;-rich deep water remained trapped below the surface rather than escaping into the atmosphere.</p>
+    <p>Scientific investigations found that the gas was predominantly carbon dioxide of magmatic/geological origin, and the evidence did not indicate a significant direct volcanic eruption that night.</p>
+    <p>The danger was therefore invisible.</p>
+  </div>
+
+  <details><summary>🔬 Why could the CO&sup2; accumulate?</summary>
+    <div class="inside">
+      <p>The deep water was denser than the surface water and remained separated by stable density stratification. Geological CO&sup2; entered the deep water and dissolved under pressure. The lake therefore behaved like a giant reservoir of dissolved gas.</p>
+    </div>
+  </details>
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>3 &middot; The night of the disaster</h3>
+    <button type="button" class="jump" onclick="goLake('nyos')">🌋 JUMP TO NYOS</button>
+    <p>Something disturbed the lake. According to the USGS investigation, people around the lake heard rumbling sounds lasting roughly 15&ndash;20 seconds. Some reported a warm sensation or unusual smells resembling rotten eggs or gunpowder. One observer on higher ground heard bubbling and saw a white cloud rise from the lake, accompanied by a large wave that struck the shore.</p>
+    <p>Then the lake changed. A huge quantity of carbon dioxide suddenly escaped from its deep waters.</p>
+  </div>
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>4 &middot; The limnic eruption</h3>
+    <p>The central process became clearer: CO&sup2;-rich deep water rose toward the surface. Pressure decreased, dissolved CO&sup2; came out of solution, bubbles formed, and the water became less dense. That caused more water to rise, allowing still more CO&sup2; to escape&mdash;a self-amplifying chain reaction. The phenomenon is known as a limnic eruption.</p>
+  </div>
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>5 &middot; The invisible river</h3>
+    <p>The result was terrifying: a massive cloud of carbon dioxide burst from the lake and moved into surrounding valleys. Unlike many disaster clouds, it gave almost no visible warning. CO&sup2; is colorless and, at high concentrations, can displace the oxygen-containing air needed for breathing. It is also denser than air, allowing concentrated gas to move downhill and accumulate in low-lying areas.</p>
+    <p>The lake had effectively released an invisible river. The PBS documentary Reactions has described the event as "invisible tsunami."</p>
+  </div>
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>6 &middot; A morning of silence</h3>
+    <p>When daylight arrived, the scale of the disaster slowly became apparent. Survivors woke after hours of unconsciousness to a landscape that seemed almost impossibly quiet. Approximately 1,700 people died, along with thousands of cattle and other livestock. Even oil lamps had gone out while still containing fuel because the gas had displaced the oxygen.</p>
+    <div class="timeline">
+      <div class="t"><b>~9:30 PM</b>Rumbling</div>
+      <div class="t"><b>Soon</b>Overturn</div>
+      <div class="t"><b>Mins</b>Cloud</div>
+      <div class="t"><b>Night</b>Asphyxia</div>
+      <div class="t"><b>AM</b>Silence</div>
+    </div>
+  </div>
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>7 &middot; The warning that came first &mdash; Lake Monoun, 1984</h3>
+    <button type="button" class="jump" onclick="goLake('monoun')">📍 SHOW LAKE MONOUN ON MAP</button>
+    <p>Two years before Lake Nyos, another Cameroonian crater lake had already demonstrated the danger. On 15 August 1984, a lethal gas burst occurred at Lake Monoun, about 100 km south of Nyos in the Cameroon Volcanic Line. A cloud of poisonous gas killed 37 people. A large water wave was also reported, and vegetation around the lake was flattened.</p>
+    <p>The scientific investigation was remarkably important. Researchers found that deep water in Monoun was strongly anoxic and contained very high concentrations of dissolved chemical species. The gases released from depressurized deep water were dominated by CO&sup2; with minor methane. The investigators proposed that an earthquake and/or landslide disturbed the lake's stable stratification, allowing CO&sup2;-rich deep water to rise and release gas.</p>
+    <p>In other words, Lake Monoun was the warning. It showed that a Cameroonian crater lake could store lethal quantities of dissolved CO&sup2; and suddenly release it into the atmosphere.</p>
+  </div>
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>8 &middot; The warning was scientifically understood &mdash; but not acted upon enough</h3>
+    <p>The tragedy at Monoun did not immediately produce the level of hazard recognition and preventive action that the later Nyos disaster demanded. The Monoun investigation identified the CO&sup2; mechanism, but the wider significance of the event was not fully translated into a comprehensive risk-reduction programme for other dangerous crater lakes.</p>
+    <p>This is the most important human lesson in the story: the Lake Nyos disaster was not completely without precedent. A similar lethal gas burst had already occurred two years earlier.</p>
+    <p>It would be too strong to claim that attention to Monoun would certainly have prevented Nyos. The initiating mechanism at Nyos was not identical in every detail, and scientific understanding was still developing. But the Monoun evidence provided a powerful warning that should have prompted earlier systematic monitoring, hazard assessment and mitigation of CO&sup2;-rich crater lakes.</p>
+  </div>
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>9 &middot; From Monoun to Nyos: the lesson begins to emerge</h3>
+    <button type="button" class="jump" onclick="goLake('both')">🗺️ COMPARE MONOUN + NYOS</button>
+    <p>Researchers later recognized that the two lakes shared a dangerous combination: deep, stagnant water; stable density stratification; and a continuing geological supply of CO&sup2;. Modern comparative limnology identifies weak deep mixing as a key condition allowing CO&sup2; to accumulate in the bottom waters.</p>
+    <p>The two disasters therefore became linked in science and disaster management: Monoun showed the phenomenon; Nyos revealed its catastrophic scale.</p>
+  </div>
+
+  <details><summary>📊 Scientific evidence used by investigators</summary>
+    <div class="inside">
+      <p>Investigators used water chemistry (magmatic origin), medical findings (asphyxiant gas), and spatial mortality patterns (terrain-following flow) to confirm the CO&sup2; release mechanism.</p>
+    </div>
+  </details>
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>10 &middot; From tragedy to prevention</h3>
+    <button type="button" class="jump" onclick="goLake('nyos')">⚙️ SHOW DEGASSING</button>
+    <p>Scientists and engineers developed systems to gradually remove carbon dioxide from deep water. Degassing pipes were installed to bring CO&sup2;-rich water upward in a controlled manner, preventing another limnic eruption.</p>
+  </div>
+
+  <div class="step" style="border-color:var(--green)">
+    <h3>11 &middot; Two lakes, one warning, one devastating lesson</h3>
+    <div style="display:flex;gap:5px">
+      <button class="jump" onclick="goLake('monoun')">← MONOUN</button>
+      <button class="jump" onclick="goLake('both')">VIEW BOTH</button>
+      <button class="jump" onclick="goLake('nyos')">NYOS →</button>
+    </div>
+    <p>Today, the two lakes represent a different kind of ending. Controlled degassing, long-term monitoring, and international cooperation have transformed Monoun and Nyos into case studies of how science can turn a natural hazard into a manageable risk.</p>
+  </div>
+
+  <details><summary>📚 References</summary>
+    <div class="inside">
+      <p class="ref">Baxter, P. J., et al. (1989). Lake Nyos disaster, Cameroon, 1986. <i>BMJ</i>.</p>
+      <p class="ref">Kling, G. W., et al. (1987). The 1986 Lake Nyos gas disaster. <i>Science</i>.</p>
+      <p class="ref">Sigurdsson, H., et al. (1987). Origin of the lethal gas burst from Lake Monoun. <i>JVGR</i>.</p>
+    </div>
+  </details>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map=L.map('map').setView([6.02,10.44], 8);
+L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17}).addTo(map);
+const lakeViews={monoun:{center:[5.579,10.584],zoom:13},nyos:{center:[6.437,10.297],zoom:13},both:{bounds:[[5.4,10.1],[6.7,10.7]]}};
+function goLake(w){if(w==='both')map.flyToBounds(lakeViews.both.bounds);else map.flyTo(lakeViews[w].center,lakeViews[w].zoom);}
+L.circle([6.437,10.297],{radius:1100,color:'#084594'}).addTo(map);
+L.circle([5.579,10.584],{radius:900,color:'#7b1fa2'}).addTo(map);
+
+// Lake coordinates
+const nyosCoords = [6.437, 10.297];
+const monounCoords = [5.579, 10.584];
+
+// Add affected areas as polygons (approximate)
+const nyosAffectedAreaCoords = [
+  [6.46, 10.28], [6.47, 10.31], [6.44, 10.33], [6.40, 10.30], [6.41, 10.27]
+];
+const monounAffectedAreaCoords = [
+  [5.59, 10.57], [5.61, 10.60], [5.58, 10.62], [5.54, 10.59], [5.55, 10.56]
+];
+
+L.polygon(nyosAffectedAreaCoords, {color: 'red', fillColor: '#f03', fillOpacity: 0.2, weight: 1})
+  .addTo(map)
+  .bindPopup('Lake Nyos Affected Area');
+
+L.polygon(monounAffectedAreaCoords, {color: 'purple', fillColor: '#800080', fillOpacity: 0.2, weight: 1})
+  .addTo(map)
+  .bindPopup('Lake Monoun Affected Area');
+
+// Add map icon symbols as tags for both lakes with popups for names and lat/lon
+L.marker(nyosCoords).addTo(map).bindPopup('Lake Nyos<br>Lat: ' + nyosCoords[0] + 'N, Lon: ' + nyosCoords[1] + 'E');
+L.marker(monounCoords).addTo(map).bindPopup('Lake Monoun<br>Lat: ' + monounCoords[0] + 'N, Lon: ' + monounCoords[1] + 'E');
+
+// Calculate distance between lakes (Haversine formula)
+function haversineDistance(coords1, coords2) {
+  function toRad(x) {
+    return x * Math.PI / 180;
+  }
+  const R = 6371; // Earth's radius in kilometers
+  const lat1 = toRad(coords1[0]);
+  const lon1 = toRad(coords1[1]);
+  const lat2 = toRad(coords2[0]);
+  const lon2 = toRad(coords2[1]);
+
+  const dLat = lat2 - lat1;
+  const dLon = lon2 - lon1;
+
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1) * Math.cos(lat2) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return (R * c).toFixed(1); // Distance in km, 1 decimal place
+}
+
+const distance = haversineDistance(nyosCoords, monounCoords);
+
+// Draw dotted bold line between lakes
+L.polyline([nyosCoords, monounCoords], {color: 'black', weight: 3, dashArray: '5, 5'}).addTo(map);
+
+// Add distance label parallel to the line
+const midLat = (nyosCoords[0] + monounCoords[0]) / 2;
+const midLon = (nyosCoords[1] + monounCoords[1]) / 2;
+
+const lineAngleRad = Math.atan2(monounCoords[1] - nyosCoords[1], monounCoords[0] - nyosCoords[0]);
+let lineAngleDeg = lineAngleRad * 180 / Math.PI;
+
+// Adjust angle for readability (keep text horizontal or near horizontal)
+if (lineAngleDeg > 90) lineAngleDeg -= 180;
+if (lineAngleDeg < -90) lineAngleDeg += 180;
+
+const distanceLabelHtml = `<div style="transform: rotate(${lineAngleDeg}deg);">${distance} km</div>`;
+const distanceLabelIcon = L.divIcon({
+  className: 'distance-label',
+  html: distanceLabelHtml,
+  iconSize: [100, 20],
+  iconAnchor: [50, 10]
+});
+
+L.marker([midLat, midLon], {
+  icon: distanceLabelIcon
+}).addTo(map);
+
+// Add a large circle encompassing both lakes
+const centerBetweenLakes = [6.008, 10.4405]; // Calculated approximate center
+// A radius of 60km (60000 meters) should cover both lakes adequately for visual representation.
+L.circle(centerBetweenLakes, {radius: 60000, color: 'blue', fillColor: 'blue', fillOpacity: 0.05, weight: 2}).addTo(map);
+
+</script>
+</body></html>
